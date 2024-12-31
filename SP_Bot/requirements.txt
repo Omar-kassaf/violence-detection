@@ -1,10 +1,15 @@
 numpy
-requests
+clip
+# requests
 matplotlib
 torch
-whatimage
-streamlit
+# whatimage
+# streamlit
 Pillow
 opencv-python
 pyaml
-jupyter
+# jupyter
+Flask==2.3.2
+opencv-python-headless==4.8.1.78
+python-dotenv
+secure-smtplib
