@@ -235,6 +235,52 @@ def generate_frames():
     cap.release()
 
 
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     """
+#     Render the main page with the form and live stream.
+#     """
+#     global camera_feed_url, recipient_email
+
+#     if request.method == 'POST':
+#         ip_address = request.form.get('ip_address')
+#         port = request.form.get('port')
+#         recipient_email = request.form.get('recipient_email')
+#         camera_feed_url = f"https://302e-80-90-173-154.ngrok-free.app/video"
+        
+
+#     return render_template_string('''
+#     <!doctype html>
+#     <html lang="en">
+#     <head>
+#         <title>Live CCTV Feed</title>
+#         <style>
+#             body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f9; color: #333; }
+#             h1 { margin: 20px; }
+#             .alert { color: red; font-size: 24px; font-weight: bold; margin-top: 20px; }
+#             video { width: 80%; height: auto; margin: auto; display: block; }
+#             form { margin: 20px; }
+#             input { padding: 10px; margin: 10px; font-size: 16px; }
+#             button { padding: 10px 20px; font-size: 16px; }
+#         </style>
+#     </head>
+#     <body>
+#         <h1>Live CCTV Feed</h1>
+#         <form method="POST">
+#             <input type="text" name="ip_address" placeholder="Enter IP Address (e.g., 192.168.10.236)" required>
+#             <input type="text" name="port" placeholder="Enter Port (e.g., 4747)" required>
+#             <input type="email" name="recipient_email" placeholder="Enter Recipient Email" required>
+#             <button type="submit">Start Surveillance</button>
+#         </form>
+#         {% if camera_feed_url and recipient_email %}
+#             <img src="/video_feed" alt="Live Video Feed">
+#             <div id="alert-box" class="alert"></div>
+#         {% endif %}
+#         <footer>&copy; 2024 Live CCTV Surveillance</footer>
+#     </body>
+#     </html>
+#     ''', camera_feed_url=camera_feed_url, recipient_email=recipient_email)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """
@@ -243,10 +289,39 @@ def index():
     global camera_feed_url, recipient_email
 
     if request.method == 'POST':
-        ip_address = request.form.get('ip_address')
-        port = request.form.get('port')
+        # Get the URL and email from the user input
+        camera_feed_url = request.form.get('camera_feed_url')
         recipient_email = request.form.get('recipient_email')
-        camera_feed_url = f"http://{ip_address}:{port}/video"
+
+        # Validate the URL format (basic validation)
+        if not camera_feed_url.startswith("https://") or not camera_feed_url.endswith("/video"):
+            return render_template_string('''
+            <!doctype html>
+            <html lang="en">
+            <head>
+                <title>Live CCTV Feed</title>
+                <style>
+                    body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f9; color: #333; }
+                    h1 { margin: 20px; }
+                    .alert { color: red; font-size: 24px; font-weight: bold; margin-top: 20px; }
+                    video { width: 80%; height: auto; margin: auto; display: block; }
+                    form { margin: 20px; }
+                    input { padding: 10px; margin: 10px; font-size: 16px; }
+                    button { padding: 10px 20px; font-size: 16px; }
+                </style>
+            </head>
+            <body>
+                <h1>Live CCTV Feed</h1>
+                <form method="POST">
+                    <input type="text" name="camera_feed_url" placeholder="Enter Camera Feed URL (e.g., https://XXXXXXX/video)" required>
+                    <input type="email" name="recipient_email" placeholder="Enter Recipient Email" required>
+                    <button type="submit">Start Surveillance</button>
+                </form>
+                <div class="alert">Invalid URL format. Please enter a valid URL (https://XXXXXXX/video).</div>
+                <footer>&copy; 2024 Live CCTV Surveillance</footer>
+            </body>
+            </html>
+            ''')
 
     return render_template_string('''
     <!doctype html>
@@ -266,8 +341,7 @@ def index():
     <body>
         <h1>Live CCTV Feed</h1>
         <form method="POST">
-            <input type="text" name="ip_address" placeholder="Enter IP Address (e.g., 192.168.10.236)" required>
-            <input type="text" name="port" placeholder="Enter Port (e.g., 4747)" required>
+            <input type="text" name="camera_feed_url" placeholder="Enter Camera Feed URL (e.g., https://XXXXXXX/video)" required>
             <input type="email" name="recipient_email" placeholder="Enter Recipient Email" required>
             <button type="submit">Start Surveillance</button>
         </form>

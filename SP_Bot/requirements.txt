@@ -1,14 +1,13 @@
 numpy
 clip
-# requests
 matplotlib
 torch
-# whatimage
-# streamlit
+
+
 Pillow
 opencv-python
 pyaml
-# jupyter
+
 Flask==2.3.2
 opencv-python-headless==4.8.1.78
 python-dotenv
